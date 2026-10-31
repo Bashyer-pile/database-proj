@@ -1,7 +1,3 @@
--- CS 354 Library Manager
--- SQL syntax follows the CREATE TABLE, PRIMARY KEY, FOREIGN KEY,
--- and INSERT INTO ... VALUES style used in Chapters 3 and 4.
--- Run this script ONCE on a new database.
 
 CREATE DATABASE library_db;
 USE library_db;
@@ -28,11 +24,11 @@ CREATE TABLE borrowings (
     borrowed_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     returned_at DATETIME NULL,
     PRIMARY KEY (loan_id),
-    FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE RESTRICT,
-    FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE RESTRICT
+    FOREIGN KEY (book_id) REFERENCES books(book_id) ,
+    FOREIGN KEY (member_id) REFERENCES members(member_id) 
 );
 
--- Sample data (as in Chapter 3 INSERT INTO ... VALUES examples).
+
 INSERT INTO books (title, author, category)
 VALUES ('Python Basics', 'A. Smith', 'Programming');
 
@@ -45,4 +41,4 @@ VALUES ('Sara Ahmed', 'sara@example.com');
 INSERT INTO members (full_name, email)
 VALUES ('Noor Ali', 'noor@example.com');
 
--- The book and member IDs are generated automatically by AUTO_INCREMENT.
+
