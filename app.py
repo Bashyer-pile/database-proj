@@ -77,7 +77,10 @@ class LibraryApp:
         tree.delete(*tree.get_children())
         if rows is not None:
             for item in rows:
-                tree.insert("", "end", values=[item.get(col, "") for col in columns])
+                tree.insert("", "end", values=[
+    "" if item.get(col) is None else item.get(col)
+    for col in columns
+])
             self.status.set(f"Loaded {len(rows)} records")
 
     def selected(self, tree):
@@ -221,12 +224,39 @@ class LibraryApp:
         if self.run_query("INSERT INTO borrowings (book_id, member_id) VALUES (%s, %s)", (book_id, member_id)) is not None:
             self.refresh_loans(); messagebox.showinfo("Borrowed", "Borrowing recorded successfully.")
 
+    
     def return_loan(self):
         row = self.selected(self.loan_tree)
         if row:
-            if row[6]: messagebox.showinfo("Already returned", "This borrowing is already returned."); return
-            if self.run_query("UPDATE borrowings SET returned_at=CURRENT_TIMESTAMP WHERE loan_id=%s", (row[0],)) is not None:
-                self.refresh_loans(); messagebox.showinfo("Returned", "Book marked as returned.")
+            if row[6] not in ("", "None"):
+                messagebox.showinfo(
+                    "Already returned",
+                    "This borrowing is already returned."
+                )
+                return
+
+            result = self.run_query(
+                """UPDATE borrowings
+                   SET returned_at = CURRENT_TIMESTAMP
+                   WHERE loan_id = %s
+                   AND returned_at IS NULL""",
+                (row[0],)
+            )
+
+            if result is not None:
+                self.refresh_loans()
+
+                if result > 0:
+                    messagebox.showinfo(
+                        "Returned",
+                        "Book marked as returned."
+                    )
+                else:
+                    messagebox.showinfo(
+                        "Already returned",
+                        "This borrowing is already returned."
+                    )
+
 
     def delete_loan(self):
         row = self.selected(self.loan_tree)
