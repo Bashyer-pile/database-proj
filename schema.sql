@@ -7,13 +7,13 @@ CREATE TABLE  books (
     title VARCHAR(150) NOT NULL,
     author VARCHAR(100) NOT NULL,
     category VARCHAR(60) NOT NULL
-) ENGINE=InnoDB;
+) ;
 
 CREATE TABLE members (
     member_id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(120) NOT NULL,
     email VARCHAR(150) NOT NULL 
-) ENGINE=InnoDB;
+) ;
 
 CREATE TABLE  borrowings (
     loan_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,7 +23,7 @@ CREATE TABLE  borrowings (
     returned_at DATETIME NULL,
     CONSTRAINT fk_borrowings_book FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE RESTRICT,
     CONSTRAINT fk_borrowings_member FOREIGN KEY (member_id) REFERENCES members(member_id) ON DELETE RESTRICT
-) ENGINE=InnoDB;
+) ;
 
 INSERT INTO books values (NULL,'Python Basics', 'A. Smith', 'Programming');
 
