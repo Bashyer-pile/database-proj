@@ -1,10 +1,13 @@
-"""CS 354 Library Manager — Tkinter + MySQL CRUD application."""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 import mysql.connector
 from mysql.connector import Error
 
-DB_CONFIG = {"host": "localhost", "user": "root", "password": "", "database": "library_db", "connection_timeout": 5}
+DB_CONFIG = {"host": "localhost", 
+             "user": "root", "password": "",
+               "database": "library_db", 
+               "connection_timeout": 5}
 
 class LibraryApp:
     def __init__(self, root):
